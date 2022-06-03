@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -25,8 +24,7 @@ SECRET_KEY = 'django-insecure-c&wu#6^^kf#sy=@y+zcl*#x2ub24aluc-3+2o05=*o-5a_sbpz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://blooming-caverns-48283.herokuapp.com/']
 
 # Application definition
 
@@ -71,17 +69,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'url_reduce.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+database_url = os.environ.get('DATABASE_URL')
 
+if database_url is None:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    database_url = database_url.replace('postgres://', '')
+    credenciais, url = database_url.split('@')
+    usuario, senha = credenciais.split(':')
+    dominio_porta, banco_de_dados = url.split('/')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': banco_de_dados,
+            'USER': usuario,
+            'PASSWORD': senha,
+            'HOST': host,
+            'PORT': port,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -101,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -112,7 +125,6 @@ TIME_ZONE = 'Europe/Lisbon'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
