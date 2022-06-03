@@ -86,6 +86,7 @@ else:
     credenciais, url = database_url.split('@')
     usuario, senha = credenciais.split(':')
     dominio_porta, banco_de_dados = url.split('/')
+    host, port = dominio_porta.split(':')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
