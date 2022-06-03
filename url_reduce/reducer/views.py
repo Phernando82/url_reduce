@@ -22,6 +22,7 @@ def relatorios(requisicao, slug):
         'reduce': url_redirect,
         'url_reduzida': url_reduzida,
         'redirecionamentos_por_data': redirecionamentos_por_data,
+        'total_cliques': sum(r.cliques for r in redirecionamentos_por_data)
 
     }
     return render(requisicao, 'reducer/relatorio.html', contexto)
