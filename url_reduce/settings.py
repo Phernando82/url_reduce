@@ -137,10 +137,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = str(BASE_DIR / 'staticfiles')
 
-# Extra places for collectstatic to find static files
-STATICFILES_DIRS = (
-    str(BASE_DIR / 'static'),
-)
 
 
 # Default primary key field type
